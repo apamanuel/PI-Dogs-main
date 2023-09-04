@@ -14,6 +14,7 @@ const getDogApiByIp = async (id)=>{
             height: result.height.metric,
             weight: result.weight.metric,
             yearOfLife: result.life_span,
+            temperament: result.temperament,
         };
         return dogApiById;
     } catch (error) {
