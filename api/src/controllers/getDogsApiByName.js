@@ -14,7 +14,7 @@ const getDogsApiByName = async (name)=>{
             height: dog.height.metric,
             weight: dog.weight.metric,
             yearOfLife: dog.life_span,
-            temperament: dog.temperament,
+            temperaments: dog.temperament,
         }));
         return dogsApiByName;
     } catch (error) {

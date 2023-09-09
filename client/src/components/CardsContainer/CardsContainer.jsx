@@ -9,12 +9,10 @@ const CardsContainer = ()=>{
         <div className={style.container}>
             {dogs.map((dog)=>{
                 return <Card
-                    id={dog.id}
                     image={dog.image}
                     name={dog.name}
-                    height={dog.height}
+                    temperaments={dog.temperaments}
                     weight={dog.weight}
-                    yearOfLife={dog.yearOfLife}
                 />
             })}        
         </div>
