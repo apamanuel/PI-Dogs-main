@@ -1,0 +1,16 @@
+.body{
+    background-image: url('/src/public/background.jpg');
+    background-size:auto;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
