@@ -14,6 +14,7 @@ const getDogsApi = async () => {
             height: dog.height.metric,
             weight: dog.weight.metric,
             yearOfLife: dog.life_span,
+            temperaments: dog.temperament,
         }));
 
         return dogsApi;
