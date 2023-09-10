@@ -1,4 +1,4 @@
-import { GET_DOGS, GET_DOGSBYNAME, SET_ORDER, FILTER_TEMPERAMENT, FILTER_ORIGIN, GET_TEMPERAMENTS} from "./actions-types";
+import { GET_DOGS, GET_DOGSBYNAME, SET_ORDER, FILTER_TEMPERAMENT, FILTER_ORIGIN, GET_TEMPERAMENTS, SET_CURRENT_PAGE, GET_DOG_BY_ID} from "./actions-types";
 
 const initialState = {
     dogs:[],
@@ -6,7 +6,9 @@ const initialState = {
     sortType: 'name',
     sortOrder: 'asc',
     temperament: '',
-    origin: ''
+    origin: '',
+    currentPage: 1,
+    dog:[]
 };
 
 const rootReducer = (state=initialState, action)=>{
@@ -23,6 +25,10 @@ const rootReducer = (state=initialState, action)=>{
             return {...state, origin: action.payload};
         case GET_TEMPERAMENTS:
             return {...state, temperaments: action.payload};
+        case SET_CURRENT_PAGE:
+            return {...state, currentPage: action.payload};
+        case GET_DOG_BY_ID:
+            return {...state, dog: action.payload};
         default:
             return {...state};
     };

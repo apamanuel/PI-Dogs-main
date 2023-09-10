@@ -2,6 +2,7 @@ import React from "react";
 import Card from "../Card/Card";
 import style from "./CardsContainer.module.css";
 import { useSelector } from "react-redux";
+import Pagination from "../Pagination/Pagination";
 
 const CardsContainer = () => {
   const dogs = useSelector((state) => state.dogs);
@@ -9,6 +10,12 @@ const CardsContainer = () => {
   const sortOrder = useSelector((state) => state.sortOrder);
   const temperament = useSelector((state) => state.temperament);
   const origin = useSelector((state) => state.origin);
+  const currentPage = useSelector((state) => state.currentPage);
+  const dogsPerPage = 8;
+
+  // Calcular el rango de perros a mostrar
+  const startIndex = (currentPage - 1) * dogsPerPage;
+  const endIndex = startIndex + dogsPerPage;
 
   // Filtrar los perros en base a temperamento y origen
   const filteredDogs = dogs.filter((dog) => {
@@ -47,11 +54,15 @@ const CardsContainer = () => {
     sortedDogs.reverse();
   }
 
+  const dogPage = sortedDogs.slice(startIndex, endIndex);
+  console.log(sortedDogs);
+
   return (
     <div className={style.container}>
-      {sortedDogs.map((dog) => (
-        <Card key={dog.id} image={dog.image} name={dog.name} temperaments={dog.temperaments} weight={dog.weight} />
+      {dogPage.map((dog) => (
+        <Card id={dog.id} image={dog.image} name={dog.name} temperaments={dog.temperaments} weight={dog.weight} />
       ))}
+      <Pagination totalDogs={sortedDogs.length}/>
     </div>
   );
 };

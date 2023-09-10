@@ -24,6 +24,7 @@ const Home = ()=>{
             <SearchBar/>
             <OrderBy/>
             <CardsContainer/>
+            
         </div>
     );
 };

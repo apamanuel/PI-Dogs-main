@@ -10,7 +10,7 @@ const getTemperaments = async ()=>{
         const dogs = response.data;
         dogs.forEach((dog) => {
             if(dog.temperament){
-                const temperaments = dog.temperament.split(',');
+                const temperaments = dog.temperament.split(', ');
                 temperaments.forEach((temperament)=>{
                     if(!uniqueTemperaments.includes(temperament)){
                         uniqueTemperaments.push(temperament); 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_DOGS, GET_DOGSBYNAME, SET_ORDER, FILTER_TEMPERAMENT, FILTER_ORIGIN, GET_TEMPERAMENTS } from './actions-types';
+import { GET_DOGS, GET_DOGSBYNAME, SET_ORDER, FILTER_TEMPERAMENT, FILTER_ORIGIN, GET_TEMPERAMENTS, SET_CURRENT_PAGE, GET_DOG_BY_ID } from './actions-types';
 
 export const getDogs=()=>{
     return async (dispatch)=>{
@@ -41,5 +41,19 @@ export const filterByOrigin = (selectedOrigin)=>{
         type: FILTER_ORIGIN,
         payload: selectedOrigin
     }
+};
+
+export const setCurrentPage = (page)=>{
+    return {
+        type: SET_CURRENT_PAGE,
+        payload: page
+    }
+};
+
+export const getDogById = (id)=>{
+    return async (dispatch)=>{
+        const dog = await axios.get(`http://localhost:3001/dogs/${id}`);
+        dispatch({type: GET_DOG_BY_ID, payload: dog.data});
+    };
 };
   

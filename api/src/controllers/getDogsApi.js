@@ -5,7 +5,7 @@ const { API_KEY, URL_BASE } = process.env;
 
 const getDogsApi = async () => {
     try {
-        const response = await axios.get(`${URL_BASE}/breeds?limit=30&api_key=${API_KEY}`);
+        const response = await axios.get(`${URL_BASE}/breeds?limit=120&api_key=${API_KEY}`);
         const result = response.data; 
         const dogsApi = result.map((dog) => ({
             id: dog.id,

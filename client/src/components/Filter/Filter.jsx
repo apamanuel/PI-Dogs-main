@@ -6,10 +6,11 @@ import style from './Filter.module.css';
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const temperaments = useSelector(state => state.temperaments); 
+  const temperaments = useSelector(state => state.temperaments);
 
   const [selectedTemperament, setSelectedTemperament] = useState('');
   const [selectedOrigin, setSelectedOrigin] = useState('');
+
 
   const handleTemperamentChange = event => {
     setSelectedTemperament(event.target.value);
