@@ -13,7 +13,7 @@ const getDogsDb = async ()=>{
                 height: dog.height,
                 weight: dog.weight,
                 yearOfLife: dog.yearOfLife,
-                temperaments: dog.temperaments.map(temperament=>temperament.name).join(','),
+                temperaments: dog.temperaments.map(temperament=>temperament.name).join(', '),
             };
         });
         return dogs;

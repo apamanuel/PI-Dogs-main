@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_DOGS, GET_DOGSBYNAME } from './actions-types';
+import { GET_DOGS, GET_DOGSBYNAME, SET_ORDER, FILTER_TEMPERAMENT, FILTER_ORIGIN, GET_TEMPERAMENTS } from './actions-types';
 
 export const getDogs=()=>{
     return async (dispatch)=>{
@@ -15,3 +15,31 @@ export const getDogsByName = (name)=>{
     };
 };
 
+export const getTemperaments = ()=>{
+    return async (dispatch)=>{
+        const temperaments = await axios.get('http://localhost:3001/temperaments');
+        dispatch({type: GET_TEMPERAMENTS, payload: temperaments.data});
+    };
+};
+
+export const setOrder = (sortType, sortOrder)=>{
+    return {
+        type: SET_ORDER,
+        payload: {sortType, sortOrder}
+    };
+};
+
+export const filterByTemperament = (selectedTemperament)=>{
+    return {
+        type: FILTER_TEMPERAMENT,
+        payload: selectedTemperament
+    };
+};
+
+export const filterByOrigin = (selectedOrigin)=>{
+    return {
+        type: FILTER_ORIGIN,
+        payload: selectedOrigin
+    }
+};
+  
