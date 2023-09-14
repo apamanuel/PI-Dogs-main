@@ -1,0 +1,31 @@
+.body{
+    background-color: rgba(239, 239, 235, 0.97);
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+        
+}
+
+.detailImage {
+    max-width: 60%;
+    display:block;
+    height: auto;
+    margin: 20px 0;
+    border: 1px solid black
+}
+
+.detailTitle {
+    font-size: 1.5rem;
+    margin: 5px 0;
+}
+
+.detailValue {
+    font-size: 1rem;
+    margin: 0.3rem;
+}

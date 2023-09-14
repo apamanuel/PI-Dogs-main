@@ -13,17 +13,17 @@ const OrderBy = ()=>{
     };
     return (
         <div className={style.body}>
-          <h4>Ordenar por:</h4>
+          <label>Ordenar por:</label>
           <button
             onClick={() => handleSortChange('name')}
-            className={sortType === 'name' ? 'active' : ''}
+            className={`${style.button} ${sortType === 'name' ? style.active : ''}`}
           >
             Nombre {sortType === 'name' && sortOrder === 'asc' && '↑'}
             {sortType === 'name' && sortOrder === 'desc' && '↓'}
           </button>
           <button
             onClick={() => handleSortChange('weight')}
-            className={sortType === 'weight' ? 'active' : ''}
+            className={`${style.button} ${sortType === 'weight' ? style.active : ''}`}
           >
             Peso {sortType === 'weight' && sortOrder === 'asc' && '↑'}
             {sortType === 'weight' && sortOrder === 'desc' && '↓'}

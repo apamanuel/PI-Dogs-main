@@ -24,10 +24,9 @@ const Filter = () => {
 
   return (
     <div className={style.body}>
-      <h2>Filtrar Perros</h2>
       <label>
         Filtrar por Temperamento:
-        <select value={selectedTemperament} onChange={handleTemperamentChange}>
+        <select value={selectedTemperament} onChange={handleTemperamentChange} className={style.select}>
           <option value="">Todos</option>
           {temperaments.map(temperament => (
             <option key={temperament.name} value={temperament.name}>
@@ -38,7 +37,7 @@ const Filter = () => {
       </label>
       <label>
         Filtrar por Origen:
-        <select value={selectedOrigin} onChange={handleOriginChange}>
+        <select value={selectedOrigin} onChange={handleOriginChange} className={style.select}>
           <option value="">Todos</option>
           <option value="API">API</option>
           <option value="Database">Database</option>

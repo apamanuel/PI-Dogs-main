@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPage } from '../../redux/actions';
+import style from "./Pagination.module.css";
 
 const Pagination = (props) => {
   const dispatch = useDispatch();
@@ -15,9 +16,9 @@ const Pagination = (props) => {
   };
 
   return (
-    <div>
+    <div className={style.body}>
       {Array.from({ length: totalPages }, (_, index) => (
-        <button
+        <button className={style.button}
           key={index}
           onClick={() => handlePageChange(index + 1)}
           disabled={currentPage === index + 1}

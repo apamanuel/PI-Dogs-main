@@ -1,6 +1,41 @@
-.main{
-    color:blue
+.container{
+    background-color: rgba(239, 239, 235, 0.97);
+    text-align: center;
+    display: grid;
 }
-.error{
-    color:red;
+
+.container label{
+    width: 70%;
+    text-align: center;
+}
+
+.container input {
+    background-color: white;
+    margin-bottom: 1em;
+    width: 15em;
+    cursor: pointer;
+    height: 3.2vh;
+    color: black;
+    border: 2px solid black;
+    border-radius: 0.375rem;
+}
+
+.container select {
+    width: 10em;
+    cursor: pointer;
+    height: 2em;
+    color: black;
+    background-color: red;
+    border: 2px solid black;
+    border-radius: 0.375rem;
+}
+
+.container button {
+    width: 10em;
+    cursor: pointer;
+    height: 2em;
+    color: black;
+    background-color: red;
+    border: 2px solid black;
+    border-radius: 0.375rem;
 }

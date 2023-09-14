@@ -17,12 +17,13 @@ const SearchBar = () => {
 
     return (
         <div className={style.main}>
-            <input
+            <input 
                 type="text"
                 placeholder="Escribe la raza de perro a buscar"
                 onChange={handleInputChange}
+                className={style.input}
             />
-            <button onClick={onSearch}>Buscar</button>
+            <button onClick={onSearch} className={style.button}>Buscar</button>
         </div>
     );
 };

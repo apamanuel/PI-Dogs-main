@@ -98,7 +98,7 @@ const Form = ()=>{
     }
 
     const disableSubmit = ()=>{
-        if(errors.name || errors.minHeight || errors.maxHeight || errors.minWeight || errors.maxWeight || errors.minYearOfLife || errors.maxYearOfLife || !form.temperaments){
+        if(errors.name || errors.minHeight || errors.maxHeight || errors.minWeight || errors.maxWeight || errors.minYearOfLife || errors.maxYearOfLife || !form.temperaments || !form.name){
             return true;
         } else return false;
     };
@@ -175,8 +175,9 @@ const Form = ()=>{
     };    
 
     return (
-        <>
+        <div className={style.container}>
             <NavBar/>
+            <h1>Formulario de Creación</h1>
             <form onSubmit={submitHandler}>
                 <div>
                     <label htmlFor="name">Nombre: </label>
@@ -223,13 +224,13 @@ const Form = ()=>{
                             </option>
                         ))}
                     </select>
-                    <button type="button" onClick={handleDeleteTemperament}>Eliminar</button>
                     <span>{form.temperaments}</span>
                 </div>
+                <button type="button" onClick={handleDeleteTemperament}>Eliminar</button>
                 <button type='submit' disabled={disableSubmit()}>CREAR</button> 
             </form>
                     
-        </>
+        </div>
     );
 };
 

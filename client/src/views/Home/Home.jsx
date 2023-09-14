@@ -19,12 +19,11 @@ const Home = ()=>{
     },[dispatch]);
     return (
         <div className={style.body}>
-            <NavBar/>  
-            <Filter/>    
-            <SearchBar/>
+            <NavBar/>
+            <SearchBar/>  
+            <Filter/>  
             <OrderBy/>
-            <CardsContainer/>
-            
+            <CardsContainer/>            
         </div>
     );
 };

@@ -62,7 +62,10 @@ const CardsContainer = () => {
       {dogPage.map((dog) => (
         <Card key={dog.id} id={dog.id} image={dog.image} name={dog.name} temperaments={dog.temperaments} weight={dog.weight} />
       ))}
-      <Pagination totalDogs={sortedDogs.length}/>
+      <div className={style.pagination}>
+        <Pagination totalDogs={sortedDogs.length} />
+      </div>
+      
     </div>
   );
 };

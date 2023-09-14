@@ -1,0 +1,9 @@
+.body{
+    background-color: transparent;
+    color: black;    
+}
+.button{
+    background-color: red;
+    width:35px;
+    cursor: pointer;
+}
