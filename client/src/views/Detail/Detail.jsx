@@ -9,7 +9,7 @@ const Detail = ()=>{
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getDogById(id))
-    },[dispatch]);
+    },[dispatch, id]);
 
     const dog = useSelector(state=>state.dog);
 
@@ -21,7 +21,7 @@ const Detail = ()=>{
             <h4>Nombre={dog.name}</h4>
             <h4>Altura={dog.height}</h4>
             <h4>Peso={dog.weight}</h4>
-            <h4>Temperamentos={dog.temperament}</h4>
+            <h4>Temperamentos={dog.temperaments}</h4>
             <h4>Años de Vida={dog.yearOfLife}</h4>
         </div>
     );

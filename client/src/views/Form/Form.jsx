@@ -1,6 +1,11 @@
+import React, { useEffect } from "react";
 import { useState } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import style from "./Form.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getTemperaments } from "../../redux/actions";
+import axios from "axios";
+
 
 const Form = ()=>{
     const [form, setForm] = useState({
@@ -14,119 +19,216 @@ const Form = ()=>{
         temperaments:'',
     });
 
-    const [errors, setErrors] = useState({
-        name:'',
-        minHeight:'',
-        maxHeight:'',
-        minWeight:'',
-        maxWeight:'',
-        minYearOfLife:'',
-        maxYearOfLife:'',
-        temperaments:'',
-    });
+
+    const [errors, setErrors] = useState({});
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getTemperaments());
+    },[dispatch]);
+
+    const temperaments = useSelector(state=>state.temperaments);
 
     const changeHandler = (event)=>{
         const property = event.target.name;
         const value = event.target.value;
-        setForm({...form, [property]:value});
-        validate({...form, [property]:value});
+        setErrors(validate({...form, [property]:value}));
+        setForm({...form, [property]:value});        
+    };
+
+    const format = (arrayOfObjects, namesString)=>{
+        // Divide el string de nombres en un array de nombres
+        const namesArray = namesString.split(', ');
+
+        // Filtra los objetos del primer arreglo cuyo nombre está incluido en el segundo arreglo de nombres
+        const matchingObjects = arrayOfObjects.filter(obj => namesArray.includes(obj.name));
+
+        // Mapea los IDs de los objetos coincidentes en un nuevo arreglo
+        const matchingIds = matchingObjects.map(obj => obj.id);
+
+        return matchingIds;
+    };
+
+  
+
+    const submitHandler = async (event)=>{
+        event.preventDefault();
+        const idTemperaments = format(temperaments, form.temperaments);
+
+        try {
+            const newDog = {
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Coat_types_3.jpg/800px-Coat_types_3.jpg',
+                name: form.name,
+                height: form.minHeight + ' - ' + form.maxHeight,
+                weight: form.minWeight + ' - ' + form.maxWeight,
+                yearOfLife: form.minYearOfLife + ' - ' + form.maxYearOfLife,
+                temperament: idTemperaments,
+            };
+
+            console.log(newDog)
+            
+            await axios.post('http://localhost:3001/dogs/', newDog);
+    
+    
+            alert('Ha sido creado exitosamente');
+            
+        } catch (error) {
+            alert(error.message);
+            
+        };
+        
+
+    };
+
+    const handleTemperamentChange = (event)=>{
+        const newTemperament = event.target.value;
+        const newtemperaments = form.temperaments && !form.temperaments.includes(newTemperament)? 
+        `${form.temperaments}, ${newTemperament}`: 
+        !form.temperaments ? newTemperament: form.temperaments;
+        setForm({...form, temperaments : newtemperaments});
+
+    };
+
+    const handleDeleteTemperament = ()=>{
+        const temperament = form.temperaments.split(', ');
+        temperament.pop();
+        const newTemperaments = temperament.join(', ');
+        setForm({...form, temperaments: newTemperaments});
+    }
+
+    const disableSubmit = ()=>{
+        if(errors.name || errors.minHeight || errors.maxHeight || errors.minWeight || errors.maxWeight || errors.minYearOfLife || errors.maxYearOfLife || !form.temperaments){
+            return true;
+        } else return false;
     };
 
     const validate = (form)=>{
-        //Validar que el campo de nombre sea valido y no este vacio
-        if(/^(?=.*\S)[\s\S]{1,50}$/.test(form.name)){
-            setErrors({...errors, name: ''});
-        } else setErrors({...errors, name: 'Falta completar'});
-        //validar que el campo Altura minima no este vacio
-        if(form.minHeight === ''){
-            setErrors({...errors, minHeight: 'Falta completar'});
-        } else setErrors({...errors, minHeight: ''});
-        //validar que el campo Altura maxima no este vacio
-        if(form.maxHeight === ''){
-            setErrors({...errors, maxHeight: 'Falta completar'});
-        } else setErrors({...errors, maxHeight: ''});
-        //validar que el campo Peso minimo no este vacio
-        if(form.minWeight === ''){
-            setErrors({...errors, minWeight: 'Falta completar'});
-        } else setErrors({...errors, minWeight: ''});
-        //validar que el campo Peso maximo no este vacio
-        if(form.maxWeight === ''){
-            setErrors({...errors, maxWeight: 'Falta completar'});
-        } else setErrors({...errors, maxWeight: ''});
-        //validar que los valores de Altura sean correctos
-        if((form.minHeight >= form.maxHeight) && form.minHeight && form.maxHeight){
-            setErrors({...errors, minHeight:'Ingrese una altura valida', maxHeight:'Ingrese una altura valida'});
-        } else setErrors({...errors, minHeight:'', maxHeight:''});
-        //validar que los valores de Peso sean correctos
-        if((form.minWeight >= form.maxWeight) && form.minWeight && form.maxWeight){
-            setErrors({...errors, minWeight:'Ingrese un peso valido', maxWeight:'Ingrese un peso valido'});
-        } else setErrors({...errors, minWeight:'', maxWeight:''});
-        //validar que el campo Años minimo no este vacio
-        if(form.minYearOfLife === ''){
-            setErrors({...errors, minYearOfLife: 'Falta completar'});
-        } else setErrors({...errors, minYearOfLife: ''});
-        //validar que el campo Años maximo no este vacio
-        if(form.maxYearOfLife === ''){
-            setErrors({...errors, maxYearOfLife: 'Falta completar'});
-        } else setErrors({...errors, maxYearOfLife: ''});
-        //validar que los valores de Años sean correctos
-        if((form.minYearOfLife >= form.maxYearOfLife) && form.minYearOfLife && form.maxYearOfLife){
-            setErrors({...errors, minYearOfLife:'Ingrese un año valido', maxYearOfLife:'Ingrese un año valido'});
-        } else setErrors({...errors, minYearOfLife:'', maxYearOfLife:''});
+        const error = {}
+        //Validar el nombre
+        if((/^[A-Za-z]+$/.test(form.name)) && form.name) error.name = '';
+        else {
+            if(!form.name) error.name = 'Campo requerido';
+            else error.name = 'El nombre es incorrecto';
+        };
 
-    };
+        //Validar la altura minima
+        if(form.minHeight && !isNaN(form.minHeight)) error.minHeight = '';
+        else {
+            if(!form.minHeight) error.minHeight = 'Campo requerido';
+            else error.minHeight = 'Formato incorrecto';
+        };
+        
+        //Validar altura maxima
+        if(form.maxHeight && !isNaN(form.maxHeight)) error.maxHeight = '';
+        else {
+            if(!form.maxHeight) error.maxHeight = 'Campo requerido';
+            else error.maxHeight = 'Formato incorrecto';
+        };
+
+        //Validar valores de altura minima y altura maxima
+        if(parseFloat(form.minHeight) >= parseFloat(form.maxHeight) && form.minHeight && form.maxHeight){
+            error.minHeight = 'Error en valores';
+            error.maxHeight = 'Error en valores';
+        };
+
+        //Validar el peso minimo
+        if(form.minWeight && !isNaN(form.minWeight)) error.minWeight = '';
+        else {
+            if(!form.minWeight) error.minWeight = 'Campo requerido';
+            else error.minWeight = 'Formato incorrecto';
+        };
+
+        //Validar el peso maximo
+        if(form.maxWeight && !isNaN(form.maxWeight)) error.maxWeight = '';
+        else {
+            if(!form.maxWeight) error.maxWeight = 'Campo requerido';
+            else error.maxWeight = 'Formato incorrecto';
+        };
+
+        //Validar valores de peso minimo y peso maximo
+        if(parseFloat(form.minWeight) >= parseFloat(form.maxWeight) && form.minWeight && form.maxWeight){
+            error.minWeight = 'Error en valores';
+            error.maxWeight = 'Error en valores';
+        };
+
+        //Validar año de vida minimo
+        if(form.minYearOfLife && !isNaN(form.minYearOfLife)) error.minYearOfLife = '';
+        else {
+            if(!form.minYearOfLife) error.minYearOfLife = 'Campo requerido';
+            else error.minYearOfLife = 'Formato incorrecto';
+        };
+
+        //Validar año de vida maximo
+        if(form.maxYearOfLife && !isNaN(form.maxYearOfLife)) error.maxYearOfLife = '';
+        else {
+            if(!form.maxYearOfLife) error.maxYearOfLife = 'Campo requerido';
+            else error.maxYearOfLife = 'Formato incorrecto';
+        };
+
+         //Validar valores de año de vida minimo y año de vida maximo
+         if(parseFloat(form.minYearOfLife) >= parseFloat(form.maxYearOfLife) && form.minYearOfLife && form.maxYearOfLife){
+            error.minYearOfLife = 'Error en valores';
+            error.maxYearOfLife = 'Error en valores';
+         };
+        return error; 
+    };    
 
     return (
         <>
             <NavBar/>
-            <form>
+            <form onSubmit={submitHandler}>
                 <div>
-                    <label>Nombre: </label>
+                    <label htmlFor="name">Nombre: </label>
                     <input type='text'value={form.name} onChange={changeHandler} name='name'/>
-                    <div className={style.error}>
-                        <label>{errors.name}</label>
-                    </div>
-                    
+                    {errors.name && <span>{errors.name}</span>}                    
                 </div>
                 <div>
-                    <label>Altura minima: </label>
+                    <label htmlFor="minHeight">Altura minima: </label>
                     <input type='text'value={form.minHeight} onChange={changeHandler} name='minHeight'/>
-                    <div className={style.error}>
-                        <label>{errors.minHeight}</label>
-                    </div>
+                    {errors.minHeight && <span>{errors.minHeight}</span>}
                 </div>
                 <div>
-                    <label>Altura maxima: </label>
+                    <label htmlFor="maxHeight">Altura maxima: </label>
                     <input type='text'value={form.maxHeight} onChange={changeHandler} name='maxHeight'/>
-                    <label>{errors.maxHeight}</label>
+                    {errors.maxHeight && <span>{errors.maxHeight}</span>}
                 </div>
                 <div>
-                    <label>Peso minimo: </label>
+                    <label htmlFor="minWeight">Peso minimo: </label>
                     <input type='text'value={form.minWeight} onChange={changeHandler} name='minWeight'/>
-                    <label>{errors.minWeight}</label>
+                    <span>{errors.minWeight}</span>
                 </div>
                 <div>
-                    <label>Maximo peso: </label>
+                    <label htmlFor="maxWeight">Maximo peso: </label>
                     <input type='text'value={form.maxWeight} onChange={changeHandler} name='maxWeight'/>
-                    <label>{errors.maxWeight}</label>
+                    <span>{errors.maxWeight}</span>
                 </div>
                 <div>
-                    <label>Años de Vida minimo: </label>
+                    <label htmlFor="minYearOfLife">Años de Vida minimo: </label>
                     <input type='text'value={form.minYearOfLife} onChange={changeHandler} name='minYearOfLife'/>
-                    <label>{errors.minYearOfLife}</label>
+                    <span>{errors.minYearOfLife}</span>
                 </div>
                 <div>
-                    <label>Años de Vida maximo: </label>
+                    <label htmlFor="maxYearOfLife">Años de Vida maximo: </label>
                     <input type='text'value={form.maxYearOfLife} onChange={changeHandler} name='maxYearOfLife'/>
-                    <label>{errors.maxYearOfLife}</label>
+                    <span>{errors.maxYearOfLife}</span>
                 </div>
                 <div>
-                    <label>Temperamentos: </label>
-                    <input type='text'value={form.temperaments} onChange={changeHandler} name='temperaments'/>
-                    <label>{errors.temperaments}</label>
+                <label htmlFor="temperaments">Temperamentos: </label>
+                    <select value={form.temperaments} onChange={handleTemperamentChange}>
+                        <option value="">Seleccionar</option>
+                        {temperaments.map(temperament => (
+                            <option key={temperament.name} value={temperament.name}>
+                                {temperament.name}
+                            </option>
+                        ))}
+                    </select>
+                    <button type="button" onClick={handleDeleteTemperament}>Eliminar</button>
+                    <span>{form.temperaments}</span>
                 </div>
+                <button type='submit' disabled={disableSubmit()}>CREAR</button> 
             </form>
-            <button>CREAR</button>            
+                    
         </>
     );
 };
